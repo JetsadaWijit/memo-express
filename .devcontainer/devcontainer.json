@@ -1,0 +1,20 @@
+{
+    "name": "Express",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "workbench.colorTheme": "Default Dark Modern" // Dark Modern
+            },
+            "extensions": [
+                "ms-azuretools.vscode-docker", // Docker
+                "github.copilot", // Github Copilot
+                "alefragnani.bookmarks", // Book Marks
+                "eamodio.gitlens", // GitLens
+                "dbaeumer.vscode-eslint", // ESLint
+                "christian-kohler.npm-intellisense", // Npm Intellisense
+                "christian-kohler.path-intellisense", // Path Intellisense
+                "streetsidesoftware.code-spell-checker" // Code Spell Checker
+            ]
+        }
+    }
+}
