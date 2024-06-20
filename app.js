@@ -17,20 +17,35 @@ app.use(session({
 }));
 
 const dataDir = path.join(__dirname, 'data');
-const usersFile = path.join(__dirname, 'data', 'users.json');
+const usersFile = path.join(dataDir, 'users.json');
 
-// Ensure the data directory exists
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir);
-}
+// Function to ensure a directory or file exists
+const ensureExists = (path, callback) => {
+    if (!fs.existsSync(path)) {
+        try {
+            callback();
+        } catch (err) {
+            console.error(`Error creating ${path}:`, err);
+        }
+    }
+};
 
-// Ensure the users.json file exists
-if (!fs.existsSync(usersFile)) {
-    fs.writeFileSync(usersFile, JSON.stringify([]));
-}
+// Ensure the data directory and users.json file exist
+ensureExists(dataDir, () => fs.mkdirSync(dataDir));
+ensureExists(usersFile, () => fs.writeFileSync(usersFile, JSON.stringify([])));
 
-app.use('/about', require('./routes/about'));
-app.use('/', require('./routes/home'));
+// Function to setup routes with error handling
+const setupRoute = (routePath, routeFile) => {
+    try {
+        app.use(routePath, require(routeFile));
+    } catch (err) {
+        console.error(`Error loading ${routePath} route:`, err);
+    }
+};
+
+// Setup routes
+setupRoute('/about', './routes/about');
+setupRoute('/', './routes/home');
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
