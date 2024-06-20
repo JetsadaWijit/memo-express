@@ -23,6 +23,9 @@ const filePaths = [
 serveStaticFiles(router, staticPath, filePaths);
 
 router.get('/', (req, res) => {
+    if (req.session.user) {
+        res.redirect('/about');
+    }
     res.render('home', { title: 'MEMO'});
 });
 
