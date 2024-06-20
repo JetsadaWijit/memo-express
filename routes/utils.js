@@ -11,8 +11,6 @@ function serveStaticFiles(router, staticPath, filePaths) {
 					console.error(err);
 					// Handle errors more informatively (e.g., specific error codes)
 					res.status(err.code || 500).send('Error serving static file'); // Generic error with code if available
-				} else {
-					console.log(`Successfully served static file: ${fullPath}`); // Optional logging for successful requests
 				}
 			});
 		});
