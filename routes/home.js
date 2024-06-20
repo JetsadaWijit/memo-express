@@ -3,6 +3,8 @@ const path = require('path');
 
 const router = express.Router();
 
+const { readUsersEmail } = require('./utils');
+
 // utils
 const { serveStaticFiles } = require('./utils');
 
@@ -18,6 +20,22 @@ serveStaticFiles(router, staticPath, filePaths);
 
 router.get('/', (req, res) => {
     res.render('home', { title: 'MEMO'});
+});
+
+// post register using bcrypt
+router.post('/register', (req, res) => {
+    const { email, password } = req.body;
+    const emails = readUsersEmail(path.join(__dirname, '..', 'data', 'users.json'));
+    const exists = emails.some((user) => user.email === email);
+
+    if (exists) {
+        res.send('User already exists');
+    } else {
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const newUser = { email, password: hashedPassword };
+        emails.push(newUser);
+        res.redirect('/about');
+    }
 });
 
 module.exports = router;
