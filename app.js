@@ -13,7 +13,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
     secret: process.env.SESSION_SECRET || 'secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false }
 }));
 
 const dataDir = path.join(__dirname, 'data');
