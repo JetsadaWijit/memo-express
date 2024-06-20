@@ -48,7 +48,7 @@ router.post('/login', (req, res) => {
     const user = emails.find((user) => user.email === email);
 
     if (user && bcrypt.compareSync(password, user.password)) {
-        req.session.email = email;
+        req.session.user = email;
         res.redirect('/about');
     } else {
         res.send('Invalid email or password');
