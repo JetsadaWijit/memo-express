@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 function serveStaticFiles(router, staticPath, filePaths) {
 	filePaths.forEach((filePath) => {
@@ -23,7 +24,12 @@ function readUsersEmail(filePath) {
 	return JSON.parse(data);
 }
 
+function writeUsersEmail(filePath, data) {
+	fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
 module.exports = {
 	readUsersEmail,
-	serveStaticFiles
+	serveStaticFiles,
+	writeUsersEmail
 };
