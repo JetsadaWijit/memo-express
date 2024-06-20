@@ -36,7 +36,7 @@ router.post('/register', (req, res) => {
     } else {
         const hashedPassword = bcrypt.hashSync(password, 10);
         writeUsersEmail(path.join(filePath), [...emails, { email, password: hashedPassword }]);
-        res.redirect('/about', { title: 'MEMO', email });
+        res.redirect('/about');
     }
 });
 
