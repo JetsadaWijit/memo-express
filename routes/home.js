@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
@@ -36,6 +37,7 @@ router.post('/register', (req, res) => {
     } else {
         const hashedPassword = bcrypt.hashSync(password, 10);
         writeUsersEmail(path.join(filePath), [...emails, { email, password: hashedPassword }]);
+        req.session.email = email;
         res.redirect('/about');
     }
 });
