@@ -29,7 +29,7 @@ if (!fs.existsSync(usersFile)) {
     fs.writeFileSync(usersFile, JSON.stringify([]));
 }
 
-app.use('/', require('./routes/about'));
+app.use('/about', require('./routes/about'));
 app.use('/', require('./routes/home'));
 
 app.listen(port, () => {
