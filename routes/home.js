@@ -3,7 +3,7 @@ const path = require('path');
 
 const router = express.Router();
 
-const { readUsersEmail } = require('./utils');
+const { readUsersEmail, writeUsersEmail } = require('./utils');
 
 // utils
 const { serveStaticFiles } = require('./utils');
@@ -32,9 +32,8 @@ router.post('/register', (req, res) => {
         res.send('User already exists');
     } else {
         const hashedPassword = bcrypt.hashSync(password, 10);
-        const newUser = { email, password: hashedPassword };
-        emails.push(newUser);
-        res.redirect('/about');
+        writeUsersEmail(path.join(__dirname, '..', 'data', 'users.json'), [...emails, { email, password: hashedPassword }]);
+        res.redirect('/about', { title: 'MEMO', email });
     }
 });
 
