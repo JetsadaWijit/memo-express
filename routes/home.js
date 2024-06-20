@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 // post register using bcrypt
 router.post('/register', (req, res) => {
     const { email, password } = req.body;
-    const emails = readUsersEmail(filePath));
+    const emails = readUsersEmail((filePath));
     const exists = emails.some((user) => user.email === email);
 
     if (exists) {
