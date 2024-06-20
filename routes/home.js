@@ -50,8 +50,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await hashPassword(password);
         const newUser = { email, password: hashedPassword };
         writeUsersEmail(filePath, [...emails, newUser]);
-        req.session.user = newUser;
-        res.redirect('/about');
+        res.redirect('/');
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
