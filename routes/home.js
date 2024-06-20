@@ -29,32 +29,52 @@ router.get('/', (req, res) => {
     res.render('home', { title: 'MEMO'});
 });
 
-// post register using bcrypt
-router.post('/register', (req, res) => {
-    const { email, password } = req.body;
-    const emails = readUsersEmail((filePath));
-    const user = emails.find((user) => user.email === email);
+// Function to hash password
+const hashPassword = (password) => bcrypt.hash(password, 10);
 
-    if (user) {
-        res.send('User already exists');
-    } else {
-        const hashedPassword = bcrypt.hashSync(password, 10);
-        writeUsersEmail(path.join(filePath), [...emails, { email, password: hashedPassword }]);
-        req.session.user = user;
+// Function to compare password
+const comparePassword = (password, hash) => bcrypt.compare(password, hash);
+
+// Register route
+router.post('/register', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const emails = await readUsersEmail(filePath);
+        const user = emails.find((user) => user.email === email);
+
+        if (user) {
+            return res.status(400).send('User already exists');
+        }
+
+        const hashedPassword = await hashPassword(password);
+        const newUser = { email, password: hashedPassword };
+        writeUsersEmail(filePath, [...emails, newUser]);
+        req.session.user = newUser;
         res.redirect('/about');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-router.post('/login', (req, res) => {
+// Login route
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const emails = readUsersEmail(filePath);
-    const user = emails.find((user) => user.email === email);
 
-    if (user && bcrypt.compareSync(password, user.password)) {
-        req.session.user = user;
-        res.redirect('/about');
-    } else {
-        res.send('Invalid email or password');
+    try {
+        const emails = await readUsersEmail(filePath);
+        const user = emails.find((user) => user.email === email);
+
+        if (user && await comparePassword(password, user.password)) {
+            req.session.user = user;
+            res.redirect('/about');
+        } else {
+            res.status(401).send('Invalid email or password');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
