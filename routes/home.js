@@ -42,4 +42,17 @@ router.post('/register', (req, res) => {
     }
 });
 
+router.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    const emails = readUsersEmail((filePath));
+    const user = emails.find((user) => user.email === email);
+
+    if (user && bcrypt.compareSync(password, user.password)) {
+        req.session.email = email;
+        res.redirect('/about');
+    } else {
+        res.send('Invalid email or password');
+    }
+});
+
 module.exports = router;
