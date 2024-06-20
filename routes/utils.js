@@ -18,6 +18,12 @@ function serveStaticFiles(router, staticPath, filePaths) {
   });
 }
 
+function readUsersEmail(filePath) {
+  const data = fs.readFileSync(filePath);
+  return JSON.parse(data);
+}
+
 module.exports = {
+    readUsersEmail,
     serveStaticFiles
 };
