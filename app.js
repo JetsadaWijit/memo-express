@@ -1,5 +1,7 @@
 const express = require('express');
 const session = require('express-session');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 
@@ -13,6 +15,19 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+const dataDir = path.join(__dirname, 'data');
+const usersFile = path.join(__dirname, 'data', 'users.json');
+
+// Ensure the data directory exists
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);
+}
+
+// Ensure the users.json file exists
+if (!fs.existsSync(usersFile)) {
+    fs.writeFileSync(usersFile, JSON.stringify([]));
+}
 
 app.use('/', require('./routes/home'));
 
