@@ -35,6 +35,13 @@ const hashPassword = (password) => bcrypt.hash(password, 10);
 // Function to compare password
 const comparePassword = (password, hash) => bcrypt.compare(password, hash);
 
+router.get('/register', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/');
+    }
+    res.render('about', { title: 'About' });
+});
+
 // Register route
 router.post('/register', async (req, res) => {
     const { email, password } = req.body;
@@ -55,6 +62,13 @@ router.post('/register', async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
+});
+
+router.get('/login', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/');
+    }
+    res.render('about', { title: 'About' });
 });
 
 // Login route
