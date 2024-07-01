@@ -46,6 +46,7 @@ const setupRoute = (routePath, routeFile) => {
 
 // Setup routes
 setupRoute('/about', './routes/about');
+setupRoute('/auth', './routes/auth');
 setupRoute('/', './routes/home');
 
 app.listen(port, () => {
