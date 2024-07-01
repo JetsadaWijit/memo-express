@@ -17,5 +17,5 @@
             ]
         }
     },
-    "postCreateCommand": "sh .devcontainer/install.sh"
+    "postCreateCommand": "sh .devcontainer/setup.sh"
 }
